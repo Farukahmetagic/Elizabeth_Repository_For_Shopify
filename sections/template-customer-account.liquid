@@ -6,7 +6,7 @@
         {%- if number_of_orders > 0 -%}
             <div class="w-full my-6 md:my-12">
                 <h2 class="text-xl font-bold text-gray-700">Order history</h2>
-                {%- paginate customer.orders by 1 -%}
+                {%- paginate customer.orders by section.settings.orders-per-page -%}
                     <div class="mt-6 grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">                    
                       {%- for order in customer.orders -%}
                         <div class="relative">
@@ -50,3 +50,19 @@
         </div>
     </div>
 </div>
+
+{% schema %}
+  {
+    "name": "Account",
+    "settings": [
+        {
+            "type": "range",
+            "id": "orders-per-page",
+            "default": 10,
+            "min": 1,
+            "max": 10,
+            "label": "Orders per page"
+        }
+    ]
+  }
+{% endschema %}
