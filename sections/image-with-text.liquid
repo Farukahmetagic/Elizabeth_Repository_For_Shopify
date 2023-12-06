@@ -1,0 +1,153 @@
+{%- style -%}
+    .image-with-text-container{
+        margin: auto;
+        width: 70%;
+        display: flex;
+        {%- if section.settings.checkbox_direction -%}
+            flex-direction: row-reverse;
+        {%- endif -%}
+        justify-content: center;
+        align-items: center;
+        min-height: 500px;
+    }
+    .img-container, .text-container{
+        width: 50%;
+        box-sizing: border-box;
+    }
+    .img-container{
+        display:flex;
+        {%- if section.settings.checkbox_direction -%}
+            justify-content: flex-start;
+        {%- else -%}
+            justify-content: flex-end;
+        {%- endif -%}
+    }
+    .img{
+        height: 100%;
+    }
+    .text-container{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        {%- if section.settings.checkbox_direction -%}
+            align-items: flex-end;
+        {%- else -%}
+            align-items: flex-start;
+        {%- endif -%}
+        height: 100%;
+        box-sizing: border-box;
+        padding: 0 50px;
+    }
+
+    .text-container > *{
+        margin: 15px 0;
+    }    
+    .placeholder{
+        width: 400px;
+        height: 600px;
+    } 
+    h2{
+        font-weight: 700;
+        font-size: 2em;
+        letter-spacing: 2px;
+    }
+    p{
+        max-width: 80%;
+        {%- if section.settings.checkbox_direction -%}
+            text-align: end;
+        {%- else -%}
+            text-align: start;
+        {%- endif -%}
+    }  
+    button{
+        text-decoration-line: underline;
+    }
+    @media only screen and (max-width: 860px){
+        .image-with-text-container{
+            width: 98%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .img-container, .text-container{
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .img-container{
+            display: block;
+        }
+        .text-container{
+            padding: 0 15px;
+        }
+    }
+{%- endstyle -%}
+
+<div class="image-with-text-container">
+    {%- if section.settings.featured_image -%}
+        <div class="img-container">
+            <img class="img" src="{{ section.settings.featured_image | image_url: width: 500 }}" alt="{{ section.settings.featured_image.alt }}">
+        </div>
+    {%- else -%}
+        {{ 'product-1' | placeholder_svg_tag: 'placeholder' }}
+    {%- endif -%}
+    <div class="text-container">
+        <h2>{{ section.settings.title }}</h2>
+        {%- if section.settings.text == blank -%}
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+        {%- else -%}
+            <p>{{ section.settings.text }}</p>
+        {%- endif -%}
+
+        <button>
+            <a href="{{ section.settings.button_link }}">
+                {{ section.settings.button_text }}
+            </a>            
+        </button>
+    </div>
+</div>
+
+{% schema %}
+  {
+    "name": "Image with text",
+    "settings": [
+        {
+            "type": "image_picker",
+            "id": "featured_image",
+            "label": "image"
+        },
+        {
+            "type": "text",
+            "id": "title",
+            "label": "Title",
+            "default": "Title"
+        },
+        {
+            "type": "richtext",
+            "id": "text",
+            "label": "Text"
+        },
+        {
+            "type": "text",
+            "id": "button_text",
+            "label": "Text",
+            "default": "Discover more"
+        },
+        {
+            "type": "url",
+            "id": "button_link",
+            "label": "Button link"
+        },
+        {
+            "type": "checkbox",
+            "id": "checkbox_direction",
+            "label": "Image right",
+            "default": false
+        }
+    ],
+    "presets": [
+      {
+        "name": "Image with text"
+      }
+    ]
+  }
+{% endschema %}

@@ -1,0 +1,80 @@
+{%- style -%}
+    .featured-collection-container{
+        padding: 0 15px;
+        margin: 40px 0;
+    }
+    h2{
+        text-align: center;
+    }
+    .compare-at-price{
+        text-decoration-line: line-through;
+        font-size: 0.7em;
+        color: #A9A9A9;
+    }
+    .product-image, .placeholder-product{
+        width: 100%
+    }
+    h3{
+        font-weight: bold;
+        font-size: 1.3em;
+    }
+    .product-block{
+        margin-bottom: 30px;
+    }
+
+    @media only screen and (min-width: 770px){
+        .products-block{
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            justify-content: center;
+            max-width: 72rem;
+            margin: auto;
+        }
+        .product-block{
+            width: 250px;
+        }
+    }
+{%- endstyle -%}
+<hr>
+<div class="featured-collection-container">
+    <h2>{{ section.settings.title }}</h2>
+    <div class="products-block">
+        {%- for product in section.settings.featured_collection.products -%}
+            <div class="product-block">
+                {%- if product.featured_image -%}
+                    <img class="product-image" src="{{ product.featured_image | image_url: height: 320 }}" alt="{{ product.featured_image.alt }}">
+                {%- else -%}
+                    {{ 'product-1' | placeholder_svg_tag: 'placeholder-product' }}
+                {%- endif -%}
+                
+                <h3>{{ product.title | link_to: product.url }}</h3>
+                <p class="compare-at-price">{{ product.compare_at_price | money }}</p>
+                <p>{{ product.price | money }}</p>
+            </div>
+        {%- endfor -%}
+    </div>      
+</div>
+<hr>
+{% schema %}
+  {
+    "name": "Featured collection 2",
+    "settings": [
+        {
+            "type": "collection",
+            "id": "featured_collection",
+            "label": "Collection"
+        },
+        {
+            "type": "text",
+            "id": "title",
+            "label": "Title",
+            "default": "Featured collection"
+        }
+    ],
+    "presets": [
+      {
+        "name": "Featured collection 2"
+      }
+    ]
+  }
+{% endschema %}
